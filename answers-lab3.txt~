@@ -1,0 +1,7 @@
+6.828. Answers Lab 3.
+Rafael Rodriguez
+
+1. We have individual handlers to provide protection.
+2. To allow users invoke int $14 we would need to set the DPL priviledge level to 3, but that would allow users to interfere with memory management.
+3. It will generate a breakpoint exception if the user has the priviledge to manually set breakpoints, if the user doesn't have this priviledge and tries to set breakpoints it will generate a general protection fault. it is necessary to change the DPL from 0 to 3 in the SETGATE corresponding to breakpoint to allow users to manually set breakpoints. If the DPL is 0, all user breakpoints will be treated as general protection faults.
+4. The idea is that when the user manually set exceptions or faults without permission, we will get general protection faults. So this prevents users without appropriate priviledges to manually set exceptions or faults.

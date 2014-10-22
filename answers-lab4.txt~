@@ -1,0 +1,15 @@
+1. boot.S is loaded by bootloader without any special treatment while mpentry.S has to be loaded by bootstrap CPU to 0x7000, so it is necessary to eliminate the original load address and also add the offset we want.
+
+2. Although It seems that using the big kernel lock guarantees that only one CPU can run the kernel code at a time, it is not necessarily true. When an interupt occurs, the hardware automaticly pushes
+
+    uint32_t tf_err;
+    uintptr_t tf_eip;
+    uint16_t tf_cs;
+    uint16_t tf_padding3;
+    uint32_t tf_eflags;
+
+to the stack before checking the lock, so it will just mess up.
+
+3. Because the kernel part of vm of all environments are identical.
+
+4. Obviouly curenv->env_tf = *tf; in trap.c saves the current trap frame.

@@ -1,0 +1,28 @@
+6.828. Answers Lab 2.
+Rafael Rodriguez
+
+1. x is uintptr_t
+2. table:
+
+Entry   BVA         Points to
+1023    0xFFC00000  page table for top 4MB of phys mem
+1022    0xFF800000  page table for the next 4MB of phys mem
+960     0xF0000000  page table for bottom 4MB of phys mem
+959     0xEFFF8000  CPU kernel stack
+956     0xEF000000  user pages
+2       0x00800000  ?
+1       0x00400000  ?
+0       0x00000000  -
+
+3. Access rights are placed so that the users cannot access the kernel space. User programs use virtual memory addresses that are reallocated as physical addresses in the user space.
+
+4. Number of npages which is
+	npages_basemem = (nvram_read(NVRAM_BASELO) * 1024) / PGSIZE
+if there is no extended memory or
+	npages_extmem = (nvram_read(NVRAM_EXTLO) * 1024) / PGSIZE
+if there's extended memory
+
+5. Space overhead:
+2^32 / 2^12 = 2^20 pages. 
+
+6. When we are over 4 MB. We can continue this because addresses over KERNBASE, let's say in [KERNBASE, KERNBASE + 4MB) are mapped to the corresponding physical address in [0, 4MB) by subtracting KERNBASE. We choose 4MB because that's how much we can map with one page table and it's enough to get us through early boot.

@@ -1,0 +1,7 @@
+1. boot.S is loaded by bootloader without any special treatment while mpentry.S has to be loaded by bootstrap CPU to 0x7000, so it is necessary to eliminate the original load address and also add the offset we want.
+
+2. It is not necessarily true. When an interrupt occurs, the hardware pushes a bunch of registers to the stack before checking the lock, so each CPU must have its own stack.
+
+3. Because the kernel part of the virtual address map of all environments is the same.
+
+4. Because it will need them when it returns to that environment. (curenv->env_tf = *tf) in trap.c saves the current trap frame.
